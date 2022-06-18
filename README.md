@@ -1,5 +1,8 @@
-# PrivCryptF-AES
-Simple AES Encryption and Decryption tool in F#
+#PrivCryptF-AES
+
+Simple AES Encryption and Decryption tool written in F#.
+
+![Screenshot 2022-06-19](https://user-images.githubusercontent.com/88947587/174459367-db0047e9-18f1-4dcc-a5d4-c3060314bbbb.jpg)
 
 ~For CMD Version:<br>
 Usage: `PrivCryptF.exe encrypt/decrypt directory password`<br>
