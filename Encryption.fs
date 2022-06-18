@@ -73,17 +73,17 @@ type EncryptionBaseClass =
         aesAlg.Mode         <- CipherMode.CFB;
 
         let cs = new CryptoStream(fs, aesAlg.CreateDecryptor(), CryptoStreamMode.Read)
-        let fsOut = new FileStream(Path.GetFileNameWithoutExtension(file), FileMode.Create)
+        let fsOut = new FileStream(file.Substring(0, file.Length - 6), FileMode.Create)
 
         let mutable buffer : byte array = Array.zeroCreate 1048576
         let mutable read : int = Unchecked.defaultof<int> 
 
         try
             while (
-                read <- fsOut.Read (buffer, 0, buffer.Length)
+                read <- cs.Read (buffer, 0, buffer.Length)
                 read > 0) do
                 
-                cs.Write(buffer, 0, read)
+                fsOut.Write(buffer, 0, read)
 
             fsOut.Close()
         finally

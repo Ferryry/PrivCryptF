@@ -1,8 +1,17 @@
-﻿open System
-open System.IO
-open Encryption
+﻿open Eto.Forms
 
-[<EntryPoint>]
+[<EntryPoint; System.STAThread>]
+let main argv = 
+    try
+        (new Application()).Run(new UI.Window())
+        0
+    with
+        ex ->
+            match MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OKCancel, MessageBoxType.Error) with
+                | DialogResult.Ok -> Application.Instance.Restart; 0
+                | _ -> Application.Instance.Quit(); -1
+
+(*[<EntryPoint>]
 let main args = 
     try
         if args.Length <> 3 then
@@ -22,3 +31,4 @@ let main args =
         | ex -> Console.Error.WriteLine(String.Format("\nERROR: {0}\n", ex)); ()
 
     0
+*)
