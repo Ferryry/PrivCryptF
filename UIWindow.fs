@@ -25,15 +25,17 @@ type Window() as self =
         self.ClientSize             <- Size (600, 240)
         self.Maximizable            <- false
         self.Resizable              <- false
+        self.WindowStyle            <- WindowStyle.Default
+        self.WindowState            <- WindowState.Normal
 
         self.LoadLayout()
 
     member self.OnClickEncrypt(e : EventArgs) =
         let directory = Directory.GetFiles(dir)
         progressbar.MaxValue        <- directory.Length
-        
         for file in directory do
             if not (file.EndsWith(".aesfs")) then
+                label.Text          <- String.Format("Encrypting File: {0}", file)
                 EncryptionBaseClass.Encrypt(file, textbox.Text)
             progressbar.Value       <- progressbar.Value + 1
 
@@ -43,9 +45,9 @@ type Window() as self =
     member self.OnClickDecrypt(e : EventArgs) =
         let directory = Directory.GetFiles(dir)
         progressbar.MaxValue        <- directory.Length
-        
         for file in directory do
             if file.EndsWith(".aesfs") then
+                label.Text          <- String.Format("Decrypting File: {0}", file)
                 EncryptionBaseClass.Decrypt(file, textbox.Text)
             progressbar.Value       <- progressbar.Value + 1
 
@@ -73,7 +75,7 @@ type Window() as self =
 
         layout.BeginCentered()
 
-        img.Image <- new Bitmap(Loader.Resource("logo.png"))
+        img.Image <- new Bitmap(Resource("logo.png"))
         layout.Add(img)
 
         layout.EndCentered()
