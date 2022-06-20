@@ -1,4 +1,4 @@
-#PrivCryptF-AES
+# PrivCryptF-AES
 
 Simple AES Encryption and Decryption tool written in F#.
 
