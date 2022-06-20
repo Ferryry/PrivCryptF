@@ -1,4 +1,4 @@
-﻿module UI
+﻿namespace UI
 
 open System
 open System.IO
@@ -40,7 +40,7 @@ type Window() as self =
             progressbar.Value       <- progressbar.Value + 1
 
         self.Reset()
-        label.Text                  <- "Done!"
+        Popup.Show("Files encrypted", self.Title)
 
     member self.OnClickDecrypt(e : EventArgs) =
         let directory = Directory.GetFiles(dir)
@@ -52,9 +52,9 @@ type Window() as self =
             progressbar.Value       <- progressbar.Value + 1
 
         self.Reset()
-        label.Text                  <- "Done!"
+        Popup.Show("Files decrypted", self.Title)
 
-    member self.OnClick_SelectFolder(e : EventArgs) =
+    member self.OnClickSelectFolder(e : EventArgs) =
         let mutable sfd = new Eto.Forms.SelectFolderDialog()
         sfd.Title                   <- "Select folder"
         if sfd.ShowDialog(self).Equals(DialogResult.Ok) then
@@ -86,7 +86,7 @@ type Window() as self =
         buttonEncrypt.Click.Add(self.OnClickEncrypt)
         buttonDecrypt.Enabled      <- false
         buttonDecrypt.Click.Add(self.OnClickDecrypt)
-        buttonFolder.Click.Add(self.OnClick_SelectFolder)
+        buttonFolder.Click.Add(self.OnClickSelectFolder)
         layout.Add(buttonFolder, false)
         layout.Add(textbox, false)
         layout.Add(buttonEncrypt, false)
