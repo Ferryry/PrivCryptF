@@ -6,6 +6,7 @@ open Eto.Forms
 open Eto.Drawing
 open Encryption
 open RSC
+open Settings
 
 type Window() as self =
     inherit Form()
@@ -14,6 +15,7 @@ type Window() as self =
     let mutable layout              = new DynamicLayout()
     let mutable img                 = new ImageView()
     let mutable textbox             = new TextBox(PlaceholderText = "Password", Size = Size(260, 32))
+    let mutable buttonConfig        = new Button(Image = new Bitmap(Resource("config.png")), Size = Size (38, 32))
     let mutable buttonFolder        = new Button(Text = "Select Folder", Size = Size(100, 32))
     let mutable buttonEncrypt       = new Button(Text = "Encrypt", Size = Size(80, 32))
     let mutable buttonDecrypt       = new Button(Text = "Decrypt", Size = Size(80, 32))
@@ -25,8 +27,6 @@ type Window() as self =
         self.ClientSize             <- Size (600, 240)
         self.Maximizable            <- false
         self.Resizable              <- false
-        self.WindowStyle            <- WindowStyle.Default
-        self.WindowState            <- WindowState.Normal
 
         self.LoadLayout()
 
@@ -40,7 +40,8 @@ type Window() as self =
             progressbar.Value       <- progressbar.Value + 1
 
         self.Reset()
-        Popup.Show("Files encrypted", self.Title)
+        if(GetSettings().notify) then
+            Popup.Show("Files encrypted", self.Title)
 
     member self.OnClickDecrypt(e : EventArgs) =
         let directory = Directory.GetFiles(dir)
@@ -52,7 +53,8 @@ type Window() as self =
             progressbar.Value       <- progressbar.Value + 1
 
         self.Reset()
-        Popup.Show("Files decrypted", self.Title)
+        if(GetSettings().notify) then
+            Popup.Show("Files decrypted", self.Title)
 
     member self.OnClickSelectFolder(e : EventArgs) =
         let mutable sfd = new Eto.Forms.SelectFolderDialog()
@@ -62,6 +64,10 @@ type Window() as self =
             dir                     <- sfd.Directory
             buttonEncrypt.Enabled   <- true
             buttonDecrypt.Enabled   <- true
+
+    member self.OnClickOpenSettings(e : EventArgs) =
+        let config = new Config()
+        config.Show()
 
     member self.Reset() =
         buttonEncrypt.Enabled       <- false
@@ -85,8 +91,10 @@ type Window() as self =
         buttonEncrypt.Enabled      <- false
         buttonEncrypt.Click.Add(self.OnClickEncrypt)
         buttonDecrypt.Enabled      <- false
+        buttonConfig.Click.Add(self.OnClickOpenSettings)
         buttonDecrypt.Click.Add(self.OnClickDecrypt)
         buttonFolder.Click.Add(self.OnClickSelectFolder)
+        layout.Add(buttonConfig, false)
         layout.Add(buttonFolder, false)
         layout.Add(textbox, false)
         layout.Add(buttonEncrypt, false)
