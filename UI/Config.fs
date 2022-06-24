@@ -13,6 +13,8 @@ type Config() as self =
     let mutable check_notify        = new CheckBox(Text = "Show Notification When Done", Size = Size(128, 32))
     let mutable button_save         = new Button(Text = "Save", Size = Size (120, 32))
     let mutable settings            = new Settings()
+    let mutable textbox_key         = new TextBox(PlaceholderText = "")
+    let mutable textbox_block       = new TextBox(PlaceholderText = "")
 
     do
         self.Title                  <- "Settings"
