@@ -11,6 +11,7 @@ type Config() as self =
     let mutable layout              = new DynamicLayout()
     //let mutable check_darkmode      = new CheckBox(Text = "Dark Mode")
     let mutable check_notify        = new CheckBox(Text = "Show Notification When Done", Size = Size(128, 32))
+    //let mutable check_darkmode      = new CheckBox(Text = "Darkmode", Size = Size(128, 32))
     let mutable button_save         = new Button(Text = "Save", Size = Size (120, 32))
     let mutable settings            = new Settings()
     let mutable textbox_key         = new TextBox(PlaceholderText = "")
@@ -18,7 +19,7 @@ type Config() as self =
 
     do
         self.Title                  <- "Settings"
-        self.ClientSize             <- Size (240, 128)
+        self.ClientSize             <- Size (240, 140)
         self.Maximizable            <- false
         self.Resizable              <- false
         self.WindowStyle            <- WindowStyle.Utility
@@ -26,6 +27,8 @@ type Config() as self =
 
         settings                    <- GetSettings()
         check_notify.Checked        <- settings.notify
+        //check_darkmode.Checked      <- settings.darkmode
+
 
         self.LoadLayout()
 
@@ -35,10 +38,10 @@ type Config() as self =
         self.Close()
 
     (*member self.OnChangeCheckDarkmode(e : EventArgs) =
-        settings.dark   <- check_darkmode.Checked.Value*)
+        settings.darkmode           <- check_darkmode.Checked.Value*)
 
     member self.OnChangeCheckNotify(e : EventArgs) =
-        settings.notify <- check_notify.Checked.Value
+        settings.notify             <- check_notify.Checked.Value
 
     member self.LoadLayout () =
         
